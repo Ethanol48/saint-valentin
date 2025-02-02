@@ -1,7 +1,6 @@
 <script lang="ts">
     import { gsap } from 'gsap';
     import wheel from '/wheel.png';
-    import arrow from '/wheel.png';
   
     const SEGMENTS = 5;
     const SEGMENT_NAMES = ["1 pts", "2 pts", "5 pts", "Une rose", "Soirée Kraken"];
@@ -93,11 +92,11 @@
   <div class="container">
     <div class="wheel-frame">
       <img class="wheel" 
-           src={wheel} 
+           src="/wheel.png"
            alt="Roue de la chance"
            bind:this={wheelElement} />
            
-      <img class="arrow" src={arrow} alt="Flèche indicateur">
+      <img class="arrow" src="/wheel.png" alt="Flèche indicateur">
     </div>
   
     <button on:click={spinWheel} disabled={spinning}>
