@@ -1,10 +1,10 @@
 export function GET() {
   const probabilities = [
-    { weight: 60 }, // 1 pts (index 0)
-    { weight: 20 }, // 2 pts (index 1)
-    { weight: 10 }, // 5 pts (index 2)
-    { weight: 5 },  // Rose (index 3)
-    { weight: 5 }   // Soirée (index 4)
+    { weight: 60 }, 
+    { weight: 5 }, 
+    { weight: 5 },
+    { weight: 10 },  
+    { weight: 20 }   
   ];
 
   const total = probabilities.reduce((sum, p) => sum + p.weight, 0);

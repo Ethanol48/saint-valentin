@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { gsap } from 'gsap';
 	import wheel from '$lib/images/wheel.png';
+	import fleche from '$lib/images/fleche.png';
 
 	const SEGMENTS = 5;
-	const SEGMENT_NAMES = ['1 pts', '2 pts', '5 pts', 'Une rose', 'Soirée Kraken'];
+	const SEGMENT_NAMES = ['1 pts', 'Soirée Kraken', 'Rose', '5 pts', '2 points'];
 
 	let spinning = false;
 	let result: string | null = null;
@@ -46,7 +47,7 @@
 	<div class="wheel-frame">
 		<img class="wheel" src={wheel} alt="Roue de la chance" bind:this={wheelElement} />
 
-		<img class="arrow" src={wheel} alt="Flèche indicateur" />
+		<img class="arrow" src={fleche} alt="Flèche indicateur" />
 	</div>
 
 	<button on:click={spinWheel} disabled={spinning}>
@@ -83,7 +84,7 @@
 
 	.arrow {
 		position: absolute;
-		top: -50px;
+		top: 0px;
 		left: 50%;
 		transform: translateX(-50%);
 		width: 60px;

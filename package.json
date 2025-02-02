@@ -13,8 +13,6 @@
 		"lint": "prettier --check .",
 		"db:push": "drizzle-kit push",
 		"db:migrate": "drizzle-kit migrate",
-		"server": "node server.js",
-		"start": "concurrently \"npm run server\" \"npm run dev\"",
 		"db:studio": "drizzle-kit studio"
 	},
 	"devDependencies": {
