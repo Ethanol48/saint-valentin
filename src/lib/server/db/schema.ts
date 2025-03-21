@@ -39,8 +39,6 @@ export const orders = sqliteTable('orders', {
     .notNull()
     .references(() => items.id),
 
-  // deprecated
-  claimed: integer('claimed', { mode: 'boolean' }).default(false)
 })
 
 export const items = sqliteTable('stock', {
