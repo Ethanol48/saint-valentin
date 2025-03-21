@@ -1,4 +1,4 @@
-import {  GetItem, GetListOrder, GetNameItem, getUsername, isUserAdmin, OrderSend } from '$lib/server/db/utilities';
+import {  GetClamed, GetItem, GetListOrder, GetNameItem, getUsername, GetWantToClaim, isUserAdmin, OrderSend, SetClamed } from '$lib/server/db/utilities';
 import { date } from 'drizzle-orm/mysql-core';
 import type { Actions, PageServerLoad } from './$types';
 import { user } from '$lib/server/db/schema';
@@ -109,10 +109,13 @@ export const load: PageServerLoad = async ({ locals }) => {
     return a;
   }
   async function updateUserOrders(list_result) {
-    for (let i = 0; i < list_result.length; i++) {
+    for (let i = 0; i < list_result.length; i++) {      
+
       for (let j = 0; j < list_result[i][1].length; j++) {
         list_result[i][1][j][0] = await GetNameItem_fct(list_result[i][1][j][0]);
       }
+      list_result[i].push( await GetClamed(list_result[i][0]))
+      list_result[i].push(await GetWantToClaim(list_result[i][0]))
       list_result[i][0] = await GetNameUser_fct(list_result[i][0]);
     }
     
@@ -122,35 +125,34 @@ export const load: PageServerLoad = async ({ locals }) => {
   console.log(list_result[0])
 
 
+  
 
   
-  /*
-  ListOrder.forEach(element => {
-    if(list_userid.includes(element.userid) && ){
-      list_userid.push(element.userid)
-      list_result.push(GetListResult(element.userid,element.itemid,element.claimed))
-    }
-    
-  });
-  */
+  
   return {
-    
+    ListeOrder:list_result
   };
 };
 
-export const actions: Actions = {
-  ordertes: async ({ request, locals }) => {
-    
+import type { Actions } from '@sveltejs/kit';
 
-    async function GetName(params:string) {
-      return await GetNameItem(params);
-    }
-    const list =  await OrderSend(locals.user!.id);
-  
+export const actions: Actions = {
+  hasClaimed: async ({ request }) => {
+    const formData = await request.formData();
+    const user = formData.get('user');
+    const lst = formData.get('orders');
     
-   
+    let user2 = "" + user;
+    await SetClamed(user2);
+
+    console.log(`Commande mise à jour pour: ${user}`);
+
+    function getUpdatedOrders2(liste,user:string){
+
+    }
     return {
-      
+      success: true,
+      newOrders: await getUpdatedOrders2(lst,user2) // Fonction récupérant les commandes actualisées
     };
-  },
+  }
 };

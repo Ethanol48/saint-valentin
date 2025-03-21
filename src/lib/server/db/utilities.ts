@@ -442,6 +442,37 @@ export const GetListOrder = async () => {
 		return result_db
 }
 
+export const GetWantToClaim = async (userId: string) => {
+	const result_db = await db
+		.select({claim: user.wantToClaim,  })
+		.from(user)
+		.where(eq(user.id, userId))
+		return result_db[0].claim
+}
+
+export const GetClamed = async (userId: string) => {
+	const result_db = await db
+		.select({claim: user.claimedOrders,  })
+		.from(user)
+		.where(eq(user.id, userId))
+		return result_db[0].claim
+}
+
+export const SetWantToClaim = async (username: string) => {
+	return await db
+		.update(user)
+		.set({ wantToClaim: true })
+		.where(eq(user.username, username));
+}
+
+export const SetClamed = async (username: string) => {
+	return await db
+		.update(user)
+		.set({ claimedOrders: true })
+		.where(eq(user.username, username));
+}
+
+
 export const GetOrdersOfUser = async(userId: string) => {
   const joined = await db
     .select({

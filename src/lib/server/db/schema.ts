@@ -7,7 +7,8 @@ export const user = sqliteTable('user', {
 	username: text('username').notNull(),
 	passwordHash: text('passwordHash').notNull(),
 	points: integer('points').default(10),
-  claimedOrders: integer('claimed_orders', { mode: 'boolean' }),
+  	claimedOrders: integer('claimed_orders', { mode: 'boolean' }).default(false),
+  	wantToClaim: integer('want_to_claim', { mode: 'boolean' }).default(false),
 	isAdmin: integer('is_admin', { mode: 'boolean' }).notNull().default(false),
 });
 
