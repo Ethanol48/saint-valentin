@@ -9,7 +9,7 @@
 
 	<br /><br />
 	<h3 style="text-align: center; font-size:20px">
-		Un shop arrivent dès mercredi matin! <br /><br />De nombreuses récompenses seront disponibles
+		Un shop arrive dès mercredi matin! <br /><br />De nombreuses récompenses seront disponibles
 		alors préparez vos points car les stocks sont limités ! 🎁
 	</h3>
 </div>

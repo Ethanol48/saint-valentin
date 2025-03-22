@@ -87,7 +87,6 @@ async function GetData(){
 
   
 
-  console.log("La fin ",list_result);
 
   // remettre les noms de base
  
@@ -112,9 +111,7 @@ async function GetData(){
     }
     
   }
-  console.log("finn")
   await updateUserOrders(list_result);
-  console.log(list_result[0])
 
   return list_result;
 
@@ -136,7 +133,7 @@ export const load: PageServerLoad = async ({ locals }) => {
   let ListResult = await GetData();
 
   
-  
+  console.log(ListResult[1])
   
   return {
     ListeOrder:ListResult
@@ -147,6 +144,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 
 export const actions: Actions = {
   hasClaimed: async ({ request }) => {
+    
+    console.log('calimed call')
     const formData = await request.formData();
     const user = formData.get('user');
     
@@ -155,10 +154,12 @@ export const actions: Actions = {
 
     
     let ListResult = await GetData()
+    return { ListeOrder : ListResult}
     
   },
 
   DisClaimed: async ({ request }) => {
+    console.log('diclaimed call')
     const formData = await request.formData();
     const user = formData.get('user');
     
@@ -168,6 +169,8 @@ export const actions: Actions = {
     
     let ListResult = await GetData()
     
+    
+    return { ListeOrder : ListResult}
   }
 };
 
