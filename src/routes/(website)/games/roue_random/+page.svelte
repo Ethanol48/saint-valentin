@@ -139,10 +139,13 @@
 
 	/* La roue occupe tout le cadre */
 	.wheel {
+		
+		position: absolute;
 		display: block;
 		width: 100%;
 		height: 100%;
 		transition: transform 0.1s;
+		z-index: -1;
 	}
 
 	/* La flèche est positionnée par-dessus, centrée horizontalement */
@@ -154,7 +157,8 @@
 		transform: translateX(-50%);
 		/* Taille relative à la largeur du conteneur */
 		width: 15%;
-		z-index: 2;
+		z-index: -1;
+		
 	}
 
 	/* Bouton principal */

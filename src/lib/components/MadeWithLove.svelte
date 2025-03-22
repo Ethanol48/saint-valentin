@@ -8,13 +8,13 @@
 </script>
 
 <div class={classes} style={styles}>
-  <div class="flex w-full items-center justify-center gap-2">
+  <div class="flex w-full items-center justify-center gap-2" style="font-size: 12px;">
     <p>Made with</p>
     <i class="fa-solid fa-heart text-[#bf2222]"></i>
     <p style="margin: 0px;">using</p>
-    <img src={svelte} class="size-6" alt="svelte" />
+    <img src={svelte} class="size-4" alt="svelte" />
     <p style="margin: 0px;">and</p>
-    <img src={shadcn} class="size-6 rounded" alt="svelte-shadcn" />
+    <img src={shadcn} class="size-4 rounded" alt="svelte-shadcn" />
   </div>
 </div>
 

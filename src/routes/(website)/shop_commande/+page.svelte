@@ -1,8 +1,12 @@
 <script lang="ts">
+  import { invalidate } from '$app/navigation';
+  import { page } from '$app/stores';
+
   import { type PageServerData, type ActionData } from './$types.js';
   import * as Dialog from '$lib/components/ui/dialog/index.js';
   import { Button } from '$lib/components/ui/button';
   import { slide, fade } from 'svelte/transition';
+	import { redirect } from '@sveltejs/kit';
 
   let { data, form }: { data: PageServerData, form: ActionData } = $props();
 
@@ -10,7 +14,7 @@
 
   let categories = $state([
     { name: "À préparer", items: [], expanded: false },
-    { name: "À récupérer", items: [], expanded: false },
+    { name: "En attente de confirmation", items: [], expanded: false },
     { name: "Récupéré", items: [], expanded: false },
   ]);
 
@@ -22,7 +26,7 @@
     } else if (wantToRetrieve) {
       categoryName = "À préparer";
     } else {
-      categoryName = "À récupérer";
+      categoryName = "En attente de confirmation";
     }
 
     const cat = categories.find(cat => cat.name === categoryName);
@@ -37,11 +41,30 @@
     categories = categories;
   }
 
-  async function handleCheckboxClick(item,orders) {
+  async function handleCheckboxClaim(item) {
   const formData = new FormData();
   formData.append('user', item.user);
-  formData.append('orders', orders);
-  console.log("fff",orders)
+  
+  try {
+    const response = await fetch('?/DisClaimed', { // Remplace par la route correcte
+      method: 'POST',
+      body: formData
+    });
+
+    if (!response.ok) {
+      console.error('Erreur lors de la mise à jour de la commande');
+    }
+    
+    window.location.reload();
+  } catch (error) {
+    console.error('Erreur réseau:', error);
+  }
+}
+
+
+async function handleCheckboxDislaim(item) {
+  const formData = new FormData();
+  formData.append('user', item.user);
   
   try {
     const response = await fetch('?/hasClaimed', { // Remplace par la route correcte
@@ -52,11 +75,12 @@
     if (!response.ok) {
       console.error('Erreur lors de la mise à jour de la commande');
     }
+    
+    window.location.reload();
   } catch (error) {
     console.error('Erreur réseau:', error);
   }
 }
-
 </script>
 
 <div class="flex flex-col p-4">
@@ -85,7 +109,10 @@
                   <input
                     type="checkbox"
                     class="h-5 w-5 text-blue-600 form-checkbox"
-                    on:change={() => handleCheckboxClick(item,orders)}
+                    on:change={() => category.name === 'Récupéré'
+                    ? handleCheckboxClaim(item)
+                    : handleCheckboxDislaim(item)}
+                    checked={category.name === "Récupéré"}
                   />
                   <div class="flex-1">
                     <p class="text-gray-800 font-medium">{item.user}</p>

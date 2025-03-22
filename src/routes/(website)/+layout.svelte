@@ -46,7 +46,11 @@
 			<Button href="/leaderboard">📜 Leaderboard</Button>
 			<Button href="/games">🕹️ Games</Button>
 			<Button href="/shop">🎁 SHOP</Button>
+			{#if data.admin}
+				<Button href="/shop_commande">📬 Orders</Button>
+			{/if}
 		</div>
+
 	{/if}
 
 	<!-- Navigation affichée sur les grands écrans -->

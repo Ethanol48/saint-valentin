@@ -1,26 +1,18 @@
-import {  GetClamed, GetItem, GetListOrder, GetNameItem, getUsername, GetWantToClaim, isUserAdmin, OrderSend, SetClamed } from '$lib/server/db/utilities';
+import {  DisClamed, GetClamed, GetItem, GetListOrder, GetNameItem, getUsername, GetWantToClaim, isUserAdmin, OrderSend, SetClamed } from '$lib/server/db/utilities';
 import { date } from 'drizzle-orm/mysql-core';
 import type { Actions, PageServerLoad } from './$types';
 import { user } from '$lib/server/db/schema';
 import { redirect } from '@sveltejs/kit';
-import type { List } from '$lib/components/ui/tabs';
+import { List } from '$lib/components/ui/tabs';
 import { LOGIN_REDIRECT } from '$lib/constants';
 
 
-
-
-export const load: PageServerLoad = async ({ locals }) => {  
-	if (locals.user === null) {
-		return redirect(302, LOGIN_REDIRECT);
-	}
-
-  const admin = await isUserAdmin(locals.user.id);
+async function GetData(){
   
-  if (!admin) {
-    return redirect(302, '/home');
-  }
-
   const ListOrder =await GetListOrder();
+
+
+
   let list_result = [];
 
   async function GetListResult(userid : string,itemid : string,claimed: boolean | null) {
@@ -36,7 +28,7 @@ export const load: PageServerLoad = async ({ locals }) => {
       list_userid.push(element.userid)
     }
   });
-
+  
   /// ajouter les users avec leur commande
 
   function UserInList(user_id : string, list ){ 
@@ -124,35 +116,58 @@ export const load: PageServerLoad = async ({ locals }) => {
   await updateUserOrders(list_result);
   console.log(list_result[0])
 
+  return list_result;
+
+}
+
+
+
+export const load: PageServerLoad = async ({ locals }) => {  
+	if (locals.user === null) {
+		return redirect(302, LOGIN_REDIRECT);
+	}
+
+  const admin = await isUserAdmin(locals.user.id);
+  
+  if (!admin) {
+    return redirect(302, '/home');
+  }
+
+  let ListResult = await GetData();
 
   
-
   
   
   return {
-    ListeOrder:list_result
+    ListeOrder:ListResult
   };
 };
 
-import type { Actions } from '@sveltejs/kit';
+
 
 export const actions: Actions = {
   hasClaimed: async ({ request }) => {
     const formData = await request.formData();
     const user = formData.get('user');
-    const lst = formData.get('orders');
     
-    let user2 = "" + user;
-    await SetClamed(user2);
+    let userStr = "" + user;
+    await SetClamed(userStr);
 
-    console.log(`Commande mise à jour pour: ${user}`);
+    
+    let ListResult = await GetData()
+    
+  },
 
-    function getUpdatedOrders2(liste,user:string){
+  DisClaimed: async ({ request }) => {
+    const formData = await request.formData();
+    const user = formData.get('user');
+    
+    let userStr = "" + user;
+    await DisClamed(userStr);
 
-    }
-    return {
-      success: true,
-      newOrders: await getUpdatedOrders2(lst,user2) // Fonction récupérant les commandes actualisées
-    };
+    
+    let ListResult = await GetData()
+    
   }
 };
+

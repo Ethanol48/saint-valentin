@@ -436,7 +436,7 @@ export const GetNameItem = async (product_id : string) => {
 
 export const GetListOrder = async () => {
 	const result_db = await db
-		.select({userid: orders.userId, itemid: orders.productId, claimed: orders.claimed, })
+		.select({userid: orders.userId, itemid: orders.productId })
 		.from(orders)
 
 		return result_db
@@ -466,9 +466,27 @@ export const SetWantToClaim = async (username: string) => {
 }
 
 export const SetClamed = async (username: string) => {
-	return await db
+	await db
 		.update(user)
 		.set({ claimedOrders: true })
+		.where(eq(user.username, username));
+
+	await db
+		.update(user)
+		.set({ wantToClaim: false })
+		.where(eq(user.username, username));
+}
+
+
+export const DisClamed = async (username: string) => {
+	await db
+		.update(user)
+		.set({ claimedOrders: false })
+		.where(eq(user.username, username));
+
+	await db
+		.update(user)
+		.set({ wantToClaim: false })
 		.where(eq(user.username, username));
 }
 
